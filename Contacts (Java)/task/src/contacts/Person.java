@@ -4,31 +4,31 @@ import java.time.LocalDate;
 
 public class Person extends Contact{
 
-    private String firstName;
-    private String lastName;
+    private String name;
+    private String surname;
     private String  gender;
-    private String birthDate;
-    Person(String firstName, String lastName, String number, String birthDate, String  gender) {
-        this.firstName = firstName;
-        this.lastName = lastName;
+    private String birth;
+    Person(String name, String surname, String number, String birthDate, String  gender) {
+        this.name = name;
+        this.surname = surname;
         super.setNumber(number);
-        this.birthDate = birthDate;
+        this.birth = birthDate;
         this.gender = gender;
     }
     public String getFirstName() {
-        return firstName;
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setFirstName(String name) {
+        this.name = name;
     }
 
     public String getLastName() {
-        return lastName;
+        return surname;
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName;
+        this.surname = lastName;
     }
 
     public void setGender(String  gender) {
@@ -46,21 +46,21 @@ public class Person extends Contact{
     }
 
     public String getBirthDate() {
-        return birthDate;
+        return birth;
     }
 
     public void setBirthDate(String birthDate) {
         try {
             LocalDate.parse(birthDate);
-            this.birthDate = birthDate;
+            this.birth = birthDate;
         } catch (Exception ex) {
             System.out.println("Bad birth date!");
-            this.birthDate = "[no data]";
+            this.birth = "[no data]";
         }
 
     }
     public String toString() {
-        return "Name: " + firstName + "\nSurname: " + lastName + "\nBirth date: " + birthDate + "\nGender: " + gender +
+        return "Name: " + name + "\nSurname: " + surname + "\nBirth date: " + birth + "\nGender: " + gender +
                 "\nNumber: " + super.getNumber() + "\nTime created: " + super.getLocalDateTime() + "\nTime last edit: "
                 + super.getLocalDateTimeEditLast();
     }
@@ -86,9 +86,9 @@ public class Person extends Contact{
     public String getField(String field) {
         String str = null;
         switch (field.toLowerCase()) {
-            case "name" -> str = firstName;
-            case "surname" -> str = lastName;
-            case "birth" -> str = birthDate;
+            case "name" -> str = name;
+            case "surname" -> str = surname;
+            case "birth" -> str = birth;
             case "gender" -> str = gender;
             case "number" -> str = super.getNumber();
         }

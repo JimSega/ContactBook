@@ -2,6 +2,7 @@ package contacts;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Action {
@@ -85,7 +86,7 @@ public class Action {
                     System.out.println("Saved");
                 }
             }
-            case "info" -> {
+            case "list" -> {
                 for(int i = 0; i < phoneBook.getPhoneBookArray().size(); i++) {
                     if(phoneBook.getPhoneBookArray().get(i) instanceof Person person) {
                         System.out.println((i + 1) + ". " + person.getFirstName() + person.getLastName());
@@ -118,6 +119,40 @@ public class Action {
                     } else System.out.println("Wrong index");
                 }
 
+
+            }
+            case "search" -> {
+                System.out.println("Enter search query:");
+                String search = scanner.nextLine();
+                ArrayList<String> searchArray = phoneBook.search(search);
+                if(!searchArray.isEmpty()) {
+                    System.out.printf("Found %d results:\n", searchArray.size());
+                    for(int i = 0; i < searchArray.size(); i++) {
+                        System.out.println(i + 1 + ". " + searchArray.get(i));
+                    }
+                } else System.out.println("Found 0 result:");
+                System.out.println("[search] Enter action ([number], back, again):");
+                String secondLevel = scanner.nextLine();
+                secondLevel(action, secondLevel, phoneBook, scanner, searchArray);
+            }
+        }
+    }
+    public static void secondLevel(String action, String secondAction, PhoneBook phoneBook, Scanner scanner,
+                                   ArrayList<String> searchArray) {
+        switch (secondAction.toLowerCase()) {
+            case "again" -> Action.action(action, phoneBook,scanner);
+            case "back" -> {
+            }
+            default -> {
+                int i = 0;
+                try {
+                    i = Integer.parseInt(secondAction) - 1;
+                } catch (Exception ex) {
+                    System.out.println("Wrong case");
+                }
+                if(i >= 0 && i < searchArray.size()) {
+                    System.out.println(phoneBook.getPhoneBookArray().get(i).toString());
+                }
 
             }
         }

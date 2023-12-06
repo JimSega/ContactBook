@@ -10,7 +10,7 @@ public class Main {
         String answer = scanner.nextLine();
         while (!answer.equalsIgnoreCase("exit")) {
             Action.action(answer, phoneBook, scanner);
-            System.out.println("\n[menu] Enter action (add, remove, edit, count, list, exit):");
+            System.out.println("\n[menu] Enter action (add, list, search, count, exit):");
             answer = scanner.nextLine();
         }
         scanner.close();
