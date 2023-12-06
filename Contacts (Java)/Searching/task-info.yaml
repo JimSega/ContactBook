@@ -1,0 +1,640 @@
+type: edu
+files:
+  - name: src/contacts/Main.java
+    visible: true
+    text: |
+      package contacts;
+      
+      public class Main {
+          public static void main(String[] args) {
+              System.out.println("Hello World!");
+          }
+      }
+    learner_created: false
+  - name: test/ContactsTest.java
+    visible: false
+    text: "import org.hyperskill.hstest.stage.StageTest;\nimport org.hyperskill.hstest.testcase.CheckResult;\n\
+    import org.hyperskill.hstest.testcase.TestCase;\n\nimport java.util.List;\nimport\
+    \ java.util.function.Function;\n\n\nclass TestClue {\n\n    Function<String, CheckResult>\
+    \ callback;\n\n    TestClue(Function<String, CheckResult> callback) {\n      \
+    \  this.callback = callback;\n    }\n}\n\n\npublic class ContactsTest extends\
+    \ StageTest<TestClue> {\n\n    private CheckResult splitActionsFeedback(int actualSize,\
+    \ int needSize) {\n        if (actualSize < needSize) {\n            return CheckResult.wrong(String.format(\"\
+    This test should contain at least %d actions, but you have only %d. \" +\n   \
+    \                         \"You should separate your actions with an empty line.\"\
+    ,\n                    needSize,\n                    actualSize));\n        }\
+    \ else {\n            return null;\n        }\n    }\n    \n    @Override\n  \
+    \  public List<TestCase<TestClue>> generate() {\n        return List.of (\n  \
+    \          new TestCase<TestClue>()\n                .setInput(\"exit\")\n   \
+    \             .setAttach(new TestClue(output -> {\n                    output\
+    \ = output.strip().toLowerCase();\n                    if (!output.contains(\"\
+    enter action\")) {\n                        return new CheckResult(false,\n  \
+    \                          \"No \\\"Enter action\\\" substring found in the output\"\
+    );\n                    }\n                    return CheckResult.correct();\n\
+    \                })),\n\n            new TestCase<TestClue>()\n              \
+    \  .setInput(\n                    \"count\\n\" +\n                    \"exit\"\
+    )\n                .setAttach(new TestClue(output -> {\n                    output\
+    \ = output.strip().toLowerCase();\n                    if (!output.contains(\"\
+    0 records\")) {\n                        return new CheckResult(false,\n     \
+    \                       \"No \\\"0 records\\\" substring found in the output.\
+    \ \" +\n                                    \"If you already have the database,\
+    \ try to delete it.\");\n                    }\n                    return CheckResult.correct();\n\
+    \                })),\n\n            new TestCase<TestClue>()\n              \
+    \  .setInput(\n                    \"add\\n\" +\n                        \"person\\\
+    n\" +\n                        \"John\\n\" +\n                        \"Smith\\\
+    n\" +\n                        \"\\n\" +\n                        \"\\n\" +\n\
+    \                        \"123 456 789\\n\" +\n                    \"count\\n\"\
+    \ +\n                    \"exit\")\n                .setAttach(new TestClue(output\
+    \ -> {\n                    output = output.strip().toLowerCase();\n         \
+    \           if (output.contains(\"0 records\")) {\n                        return\
+    \ new CheckResult(false,\n                            \"Can't add the person\"\
+    );\n                    }\n                    return CheckResult.correct();\n\
+    \                })),\n\n            new TestCase<TestClue>()\n              \
+    \  .setInput(\n                    \"add\\n\" +\n                        \"person\\\
+    n\" +\n                        \"John\\n\" +\n                        \"Smith\\\
+    n\" +\n                        \"\\n\" +\n                        \"\\n\" +\n\
+    \                        \"123 456 789\\n\" +\n                    \"list\\n\"\
+    \ +\n                    \"1\\n\" +\n                    \"menu\\n\" +\n     \
+    \               \"exit\")\n                .setAttach(new TestClue(output -> {\n\
+    \                    String[] blocks = output.strip().split(\"(\\\\s*\\\\n\\\\\
+    s*){2,}\");\n                    var feedback = splitActionsFeedback(blocks.length,\
+    \ 3);\n                    if (feedback != null) return feedback;\n\n        \
+    \            for (String infoBlock : blocks) {\n                        if (infoBlock.contains(\"\
+    Name: John\")\n                                && infoBlock.contains(\"Surname:\
+    \ Smith\")\n                                && infoBlock.contains(\"Birth date:\
+    \ [no data]\")\n                                && infoBlock.contains(\"Gender:\
+    \ [no data]\")\n                                && infoBlock.contains(\"Number:\
+    \ 123 456 789\")\n                                && infoBlock.contains(\"Time\
+    \ created:\")\n                                && infoBlock.contains(\"Time last\
+    \ edit:\")) {\n                            return CheckResult.correct();\n   \
+    \                     }\n                    }\n                    return new\
+    \ CheckResult(false,\n                            \"Something wrong with printing\
+    \ user info\");\n                })),\n\n            new TestCase<TestClue>()\n\
+    \                .setInput(\n                    \"add\\n\" +\n              \
+    \          \"organization\\n\" +\n                        \"Pizza Shop\\n\" +\n\
+    \                        \"Wall St. 1\\n\" +\n                        \"+0 (123)\
+    \ 456-789-9999\\n\" +\n                    \"list\\n\" +\n                   \
+    \ \"1\\n\" +\n                    \"menu\\n\" +\n                    \"exit\"\
+    )\n                .setAttach(new TestClue(output -> {\n                    String[]\
+    \ blocks = output.strip().split(\"(\\\\s*\\\\n\\\\s*){2,}\");\n              \
+    \      var feedback = splitActionsFeedback(blocks.length, 3);\n              \
+    \      if (feedback != null) return feedback;\n\n                    for (String\
+    \ infoBlock : blocks) {\n                        if (infoBlock.contains(\"Organization\
+    \ name: Pizza Shop\")\n                                && infoBlock.contains(\"\
+    Address: Wall St. 1\")\n                                && infoBlock.contains(\"\
+    Number: +0 (123) 456-789-9999\")\n                                && infoBlock.contains(\"\
+    Time created:\")\n                                && infoBlock.contains(\"Time\
+    \ last edit:\")) {\n                            return CheckResult.correct();\n\
+    \                        }\n                    }\n                    return\
+    \ new CheckResult(false,\n                            \"Something wrong with printing\
+    \ organization info\");\n                })),\n\n            new TestCase<TestClue>()\n\
+    \                .setInput(\n                    \"add\\n\" +\n              \
+    \          \"person\\n\" +\n                        \"John\\n\" +\n          \
+    \              \"Smith\\n\" +\n                        \"\\n\" +\n           \
+    \             \"\\n\" +\n                        \"123 456 789\\n\" +\n      \
+    \              \"list\\n\" +\n                    \"1\\n\" +\n               \
+    \     \"edit\\n\" +\n                        \"gender\\n\" +\n               \
+    \         \"M\\n\" +\n                    \"menu\\n\" +\n                    \"\
+    list\\n\" +\n                    \"1\\n\" +\n                    \"menu\\n\" +\n\
+    \                    \"exit\")\n                .setAttach(new TestClue(output\
+    \ -> {\n                    String[] blocks = output.strip().split(\"(\\\\s*\\\
+    \\n\\\\s*){2,}\");\n                    var feedback = splitActionsFeedback(blocks.length,\
+    \ 6);\n                    if (feedback != null) return feedback;\n\n        \
+    \            for (String infoBlock : blocks) {\n                        if (infoBlock.contains(\"\
+    Name: John\")\n                                && infoBlock.contains(\"Surname:\
+    \ Smith\")\n                                && infoBlock.contains(\"Birth date:\
+    \ [no data]\")\n                                && infoBlock.contains(\"Gender:\
+    \ M\")\n                                && infoBlock.contains(\"Number: 123 456\
+    \ 789\")\n                                && infoBlock.contains(\"Time created:\"\
+    )\n                                && infoBlock.contains(\"Time last edit:\"))\
+    \ {\n                            return CheckResult.correct();\n             \
+    \           }\n                    }\n                    return new CheckResult(false,\n\
+    \                            \"Editing person is not working\");\n           \
+    \     })),\n\n            new TestCase<TestClue>()\n                .setInput(\n\
+    \                    \"add\\n\" +\n                        \"organization\\n\"\
+    \ +\n                        \"Pizza Shop\\n\" +\n                        \"Wall\
+    \ St. 1\\n\" +\n                        \"+0 (123) 456-789-9999\\n\" +\n     \
+    \               \"list\\n\" +\n                    \"1\\n\" +\n              \
+    \      \"edit\\n\" +\n                        \"address\\n\" +\n             \
+    \           \"Wall St 2\\n\" +\n                    \"menu\\n\" +\n          \
+    \          \"list\\n\" +\n                    \"1\\n\" +\n                   \
+    \ \"menu\\n\" +\n                    \"exit\")\n                .setAttach(new\
+    \ TestClue(output -> {\n                    String[] blocks = output.strip().split(\"\
+    (\\\\s*\\\\n\\\\s*){2,}\");\n                    var feedback = splitActionsFeedback(blocks.length,\
+    \ 6);\n                    if (feedback != null) return feedback;\n\n        \
+    \            for (String infoBlock : blocks) {\n                        if (infoBlock.contains(\"\
+    Organization name: Pizza Shop\")\n                                && infoBlock.contains(\"\
+    Address: Wall St 2\")\n                                && infoBlock.contains(\"\
+    Number: +0 (123) 456-789-9999\")\n                                && infoBlock.contains(\"\
+    Time created:\")\n                                && infoBlock.contains(\"Time\
+    \ last edit:\")) {\n                            return CheckResult.correct();\n\
+    \                        }\n                    }\n                    return\
+    \ new CheckResult(false,\n                            \"Editing organization is\
+    \ not working\");\n                })),\n\n            new TestCase<TestClue>()\n\
+    \                .setInput(\n                    \"add\\n\" +\n              \
+    \          \"organization\\n\" +\n                        \"Pizza Shop\\n\" +\n\
+    \                        \"Wall St. 1\\n\" +\n                        \"+0 (123)\
+    \ 456-789-9999\\n\" +\n                    \"add\\n\" +\n                    \
+    \    \"person\\n\" +\n                        \"John\\n\" +\n                \
+    \        \"Smith\\n\" +\n                        \"\\n\" +\n                 \
+    \       \"\\n\" +\n                        \"123 456 789\\n\" +\n            \
+    \        \"add\\n\" +\n                        \"organization\\n\" +\n       \
+    \                 \"PizzaNuts\\n\" +\n                        \"Wall St. 6\\n\"\
+    \ +\n                        \"+0 (123) 456-789-9999\\n\" +\n                \
+    \    \"search\\n\" +\n                        \"pizz\\n\" +\n                \
+    \    \"1\\n\" +\n                    \"menu\\n\" +\n                    \"exit\"\
+    )\n                .setAttach(new TestClue(output -> {\n                    String[]\
+    \ blocks = output.strip().split(\"(\\\\s*\\\\n\\\\s*){2,}\");\n              \
+    \      var feedback = splitActionsFeedback(blocks.length, 4);\n              \
+    \      if (feedback != null) return feedback;\n    \n                    \n  \
+    \                  for (String infoBlock : blocks) {\n                       \
+    \ if (infoBlock.contains(\"Pizza Shop\")\n                                && infoBlock.contains(\"\
+    PizzaNuts\")\n                                && !infoBlock.contains(\"John\"\
+    )) {\n                            return CheckResult.correct();\n            \
+    \            }\n                    }\n                    return new CheckResult(false,\n\
+    \                            \"Search is not working\");\n                })),\n\
+    \n            new TestCase<TestClue>()\n                .setInput(\n         \
+    \           \"add\\n\" +\n                        \"organization\\n\" +\n    \
+    \                    \"Pizza Shop\\n\" +\n                        \"Wall St. 1\\\
+    n\" +\n                        \"+0 (123) 456-789-9999\\n\" +\n              \
+    \      \"add\\n\" +\n                        \"person\\n\" +\n               \
+    \         \"John\\n\" +\n                        \"Smith\\n\" +\n            \
+    \            \"\\n\" +\n                        \"\\n\" +\n                  \
+    \      \"123 456 789\\n\" +\n                    \"add\\n\" +\n              \
+    \          \"organization\\n\" +\n                        \"PizzaNuts\\n\" +\n\
+    \                        \"Wall St. 6\\n\" +\n                        \"+0 (123)\
+    \ 456-789-9999\\n\" +\n                    \"search\\n\" +\n                 \
+    \       \"s\\n\" +\n                    \"1\\n\" +\n                    \"menu\\\
+    n\" +\n                    \"exit\")\n                .setAttach(new TestClue(output\
+    \ -> {\n                    String[] blocks = output.strip().split(\"(\\\\s*\\\
+    \\n\\\\s*){2,}\");\n                    var feedback = splitActionsFeedback(blocks.length,\
+    \ 4);\n                    if (feedback != null) return feedback;\n\n        \
+    \            for (String infoBlock : blocks) {\n                        if (infoBlock.contains(\"\
+    Pizza Shop\")\n                                && infoBlock.contains(\"John Smith\"\
+    )\n                                && infoBlock.contains(\"PizzaNuts\")) {\n \
+    \                           return CheckResult.correct();\n                  \
+    \      }\n                    }\n                    return new CheckResult(false,\n\
+    \                            \"Search is not working\");\n                })),\n\
+    \n        new TestCase<TestClue>()\n            .setInput(\n                \"\
+    add\\n\" +\n                    \"organization\\n\" +\n                    \"\
+    Pizza Shop\\n\" +\n                    \"Wall St. 1\\n\" +\n                 \
+    \   \"+0 (123) 456-789-9999\\n\" +\n                \"add\\n\" +\n           \
+    \         \"person\\n\" +\n                    \"John\\n\" +\n               \
+    \     \"Smith\\n\" +\n                    \"\\n\" +\n                    \"\\\
+    n\" +\n                    \"123 456 789\\n\" +\n                \"add\\n\" +\n\
+    \                    \"organization\\n\" +\n                    \"PizzaNuts\\\
+    n\" +\n                    \"Wall St. 6\\n\" +\n                    \"+0 (123)\
+    \ 456-781-9999\\n\" +\n                \"search\\n\" +\n                    \"\
+    789\\n\" +\n                \"1\\n\" +\n                \"menu\\n\" +\n      \
+    \          \"exit\")\n            .setAttach(new TestClue(output -> {\n      \
+    \          String[] blocks = output.strip().split(\"(\\\\s*\\\\n\\\\s*){2,}\"\
+    );\n                var feedback = splitActionsFeedback(blocks.length, 4);\n \
+    \               if (feedback != null) return feedback;\n\n                for\
+    \ (String infoBlock : blocks) {\n                    if (infoBlock.contains(\"\
+    Pizza Shop\")\n                            && infoBlock.contains(\"John Smith\"\
+    )\n                            && !infoBlock.contains(\"PizzaNuts\")) {\n    \
+    \                    return CheckResult.correct();\n\n                    } else\
+    \ if (infoBlock.contains(\"+0 (123) 456-789-9999\")\n                        \
+    \    && infoBlock.contains(\"123 456 789\")\n                            && !infoBlock.contains(\"\
+    +0 (123) 456-781-9999\")) {\n                        return CheckResult.correct();\n\
+    \                    }\n                }\n                return new CheckResult(false,\n\
+    \                        \"Search by phone number is not working\");\n       \
+    \     }))\n        );\n    }\n\n    @Override\n    public CheckResult check(String\
+    \ reply, TestClue clue) {\n        try {\n            return clue.callback.apply(reply);\n\
+    \        }\n        catch (Exception ex) {\n            return new CheckResult(false,\
+    \ \"Can't check the answer\");\n        }\n    }\n}\n"
+    learner_created: false
+  - name: src/contacts/Contact.java
+    visible: true
+    text: |
+      package contacts;
+      
+      import java.time.LocalDateTime;
+      import java.time.format.DateTimeFormatter;
+      import java.util.regex.Matcher;
+      import java.util.regex.Pattern;
+      
+      public abstract class Contact {
+      
+          private String number = "";
+          protected final boolean isPerson;
+          protected final LocalDateTime localDateTime;
+          protected LocalDateTime localDateTimeEditLast;
+          Contact() {
+              isPerson = this instanceof Person;
+              localDateTime = LocalDateTime.now();
+              localDateTimeEditLast = localDateTime;
+          }
+          public void setLocalDateTimeEditLast(LocalDateTime localDateTimeEditLast) {
+              this.localDateTimeEditLast = localDateTimeEditLast;
+          }
+          public String getLocalDateTimeEditLast() {
+              return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm").format(localDateTimeEditLast);
+          }
+          public String getLocalDateTime() {
+              return DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm").format(localDateTime);
+          }
+          public String getNumber() {
+              return number;
+          }
+          public void setNumber(String number) {
+              if(checkContact(number)) {
+                  this.number = number;
+              } else {
+                  this.number = "[no number]";
+              }
+          }
+          public boolean hasNumber() {
+              return !number.isEmpty();
+          }
+          private boolean checkContact(String number) {
+              boolean wrongNumber = true;
+              boolean parentheses = false;
+              Pattern pattern = Pattern.compile("\\+?\\(?\\p{Alnum}+\\)?");
+              if(number.matches("[- ]")) {
+                  System.out.println("Wrong number format!");
+                  return false;
+              }
+              for(String group : number.split("[- ]")) {
+                  Matcher matcher = pattern.matcher(group);
+                  if(group.matches(".*[()].*")) {
+                      if(parentheses) {
+                          wrongNumber = false;
+                      }
+                      parentheses = true;
+                  }
+                  if(!matcher.matches() || !wrongNumber) {
+                      wrongNumber = false;
+                      System.out.println("Wrong number format!");
+                      break;
+                  }
+                  pattern = Pattern.compile("\\(?\\p{Alnum}{2,}\\)?");
+              }
+              return wrongNumber;
+          }
+      }
+    learner_created: true
+  - name: src/contacts/PhoneBook.java
+    visible: true
+    text: |
+      package contacts;
+      
+      import java.util.ArrayList;
+      
+      public class PhoneBook {
+          private final ArrayList<Contact> phoneBookArray;
+          public PhoneBook() {
+              phoneBookArray = new ArrayList<>();
+          }
+      
+          public ArrayList<Contact> getPhoneBookArray() {
+              return phoneBookArray;
+          }
+          public void addContact(Contact contact) {
+              phoneBookArray.add(contact);
+          }
+          public int getCount() {
+              return phoneBookArray.size();
+          }
+      }
+    learner_created: true
+  - name: src/contacts/Organization.java
+    visible: true
+    text: |
+      package contacts;
+      
+      public class Organization extends Contact{
+          private String name;
+          private String address;
+          Organization(String name, String address, String number) {
+              this.name = name;
+              this.address = address;
+              super.setNumber(number);
+          }
+      
+          public String getName() {
+              return name;
+          }
+      
+          public void setName(String name) {
+              this.name = name;
+          }
+      
+          public String getAddress() {
+              return address;
+          }
+      
+          public void setAddress(String address) {
+              this.address = address;
+          }
+      
+          public String toString() {
+              return "Organization name: " + name + "\nAddress: " + address + "\nNumber: "
+                      + super.getNumber() + "\nTime created: " + super.getLocalDateTime() + "\nTime last edit: "
+                      + super.getLocalDateTimeEditLast();
+          }
+          public static class Builder {
+              private String name;
+              private String address;
+              private String number;
+      
+              public Builder addName(String name) {
+                  this.name = name;
+                  return this;
+              }
+              public Builder addAddress(String address) {
+                  this.address = address;
+                  return this;
+              }
+      
+              public Builder addNumber(String number) {
+                  this.number = number;
+                  return this;
+              }
+              public Contact build() {
+                  return new Organization(name, address, number);
+              }
+          }
+      }
+    learner_created: true
+  - name: src/contacts/Person.java
+    visible: true
+    text: |
+      package contacts;
+      
+      import java.time.LocalDate;
+      
+      public class Person extends Contact{
+      
+          private String firstName;
+          private String lastName;
+          private String  gender;
+          private String birthDate;
+          Person(String firstName, String lastName, String number, String birthDate, String  gender) {
+              this.firstName = firstName;
+              this.lastName = lastName;
+              super.setNumber(number);
+              this.birthDate = birthDate;
+              this.gender = gender;
+          }
+          public String getFirstName() {
+              return firstName;
+          }
+      
+          public void setFirstName(String firstName) {
+              this.firstName = firstName;
+          }
+      
+          public String getLastName() {
+              return lastName;
+          }
+      
+          public void setLastName(String lastName) {
+              this.lastName = lastName;
+          }
+      
+          public void setGender(String  gender) {
+              if(!gender.matches("[MmFf]")) {
+                  System.out.println("Bad gender!");
+                  this.gender = "[no data]";
+              } else {
+                  this.gender = gender;
+              }
+      
+          }
+      
+          public String getGender() {
+              return gender;
+          }
+      
+          public String getBirthDate() {
+              return birthDate;
+          }
+      
+          public void setBirthDate(String birthDate) {
+              try {
+                  LocalDate.parse(birthDate);
+                  this.birthDate = birthDate;
+              } catch (Exception ex) {
+                  System.out.println("Bad birth date!");
+                  this.birthDate = "[no data]";
+              }
+      
+          }
+          public String toString() {
+              return "Name: " + firstName + "\nSurname: " + lastName + "\nBirth date: " + birthDate + "\nGender: " + gender +
+                      "\nNumber: " + super.getNumber() + "\nTime created: " + super.getLocalDateTime() + "\nTime last edit: "
+                      + super.getLocalDateTimeEditLast();
+          }
+      
+          public static class Builder {
+              private String firstName;
+              private String lastName;
+              private String number;
+              private String  gender;
+              private String birthDate;
+              public Builder addFirstName(String firstName) {
+                  this.firstName = firstName;
+                  return this;
+              }
+              public Builder addLastName(String lastName) {
+                  this.lastName = lastName;
+                  return this;
+              }
+      
+              public Builder addNumber(String number) {
+                  this.number = number;
+                  return this;
+              }
+              public Builder addGender(String  gender) {
+                  this.gender = gender;
+                  return this;
+              }
+              public Builder addBirthDate(String birthDate) {
+                  this.birthDate = birthDate;
+                  return this;
+              }
+              public Contact build() {
+                  return new Person(firstName, lastName, number, birthDate, gender);
+              }
+          }
+      }
+    learner_created: true
+  - name: src/contacts/Action.java
+    visible: true
+    text: |
+      package contacts;
+      
+      import java.time.LocalDate;
+      import java.time.LocalDateTime;
+      import java.util.Scanner;
+      
+      public class Action {
+          public static void action(String action, PhoneBook phoneBook, Scanner scanner) {
+              switch (action.toLowerCase()) {
+                  case "count" -> System.out.printf("The Phone Book has %s records.\n", phoneBook.getCount());
+                  case "add" -> {
+                      System.out.println("Enter the type (person, organization):");
+                      String type = scanner.nextLine();
+                      switch (type.toLowerCase()) {
+                          case "person" -> {
+                              System.out.println("Enter the name:");
+                              String name = scanner.nextLine();
+                              System.out.println("Enter the surname:");
+                              String surname = scanner.nextLine();
+                              System.out.print("Enter the birth date:");
+                              String birthDate = scanner.nextLine();
+                              try {
+                                  LocalDate.parse(birthDate);
+                              } catch (Exception ex) {
+                                  System.out.println("Bad birth date!");
+                                  birthDate = "[no data]";
+                              }
+                              System.out.print("Enter the gender (M, F):");
+                              String gender = scanner.nextLine();
+                              if(!gender.matches("[MmFf]")) {
+                                  System.out.println("Bad gender!");
+                                  gender = "[no data]";
+                              }
+                              System.out.println("Enter the number:");
+                              String number = scanner.nextLine();
+                              Contact contact = new Person.Builder()
+                                      .addFirstName(name)
+                                      .addLastName(surname)
+                                      .addNumber(number)
+                                      .addGender(gender)
+                                      .addBirthDate(birthDate)
+                                      .build();
+                              phoneBook.addContact(contact);
+                              System.out.println("The record added.");
+                          }
+                          case "organization" -> {
+                              System.out.println("Enter the organization name:");
+                              String name = scanner.nextLine();
+                              System.out.println("Enter the address:");
+                              String address = scanner.nextLine();
+                              System.out.println("Enter the number:");
+                              String number = scanner.nextLine();
+                              Contact contact = new Organization.Builder()
+                                      .addName(name)
+                                      .addAddress(address)
+                                      .addNumber(number)
+                                      .build();
+                              phoneBook.addContact(contact);
+                              System.out.println("The record added.");
+                          }
+                          default -> System.out.println("Wrong type");
+                      }
+      
+                  }
+                  case "edit" -> {
+                      if(phoneBook.getCount() == 0) {
+                          System.out.println("No records to edit!");
+                      } else {
+                          for(int i = 0; i < phoneBook.getPhoneBookArray().size(); i++) {
+                              if(phoneBook.getPhoneBookArray().get(i) instanceof Person person) {
+                                  System.out.println((i + 1) + ". " + person.getFirstName() + " " + person.getLastName());
+                              } else if(phoneBook.getPhoneBookArray().get(i) instanceof Organization organization) {
+                                  System.out.println((i + 1) + ". " + organization.getName());
+                              }
+                          }
+                          System.out.print("Select a record: ");
+                          int i = scanner.nextInt() - 1;
+                          scanner.nextLine();
+                          if (phoneBook.getPhoneBookArray().get(i) instanceof Person person) {
+                              System.out.print("Select a field (name, surname, birth, gender, number): ");
+                              String fieldName = scanner.nextLine();
+                              System.out.printf("Enter %s:", fieldName);
+                              String field = scanner.nextLine();
+                              switch (fieldName.toLowerCase()) {
+                                  case "gender" -> {
+                                      person.setGender(field);
+                                      person.setLocalDateTimeEditLast(LocalDateTime.now());
+                                      System.out.println("The record updated!");
+                                  }
+                                  case "birth" -> {
+                                      person.setBirthDate(field);
+                                      person.setLocalDateTimeEditLast(LocalDateTime.now());
+                                      System.out.println("The record updated!");
+                                  }
+                                  case "number" -> {
+                                      person.setNumber(field);
+                                      person.setLocalDateTimeEditLast(LocalDateTime.now());
+                                      System.out.println("The record updated!");
+                                  }
+                                  case "name" -> {
+                                      person.setFirstName(field);
+                                      person.setLocalDateTimeEditLast(LocalDateTime.now());
+                                      System.out.println("The record updated!");
+                                  }
+                                  case "surname" -> {
+                                      person.setLastName(field);
+                                      person.setLocalDateTimeEditLast(LocalDateTime.now());
+                                      System.out.println("The record updated!");
+                                  }
+                                  default -> System.out.println("Wrong case!");
+                              }
+                          } else if (phoneBook.getPhoneBookArray().get(i) instanceof Organization organization) {
+                              System.out.print("Select a field (address, number):");
+                              String fieldName = scanner.nextLine();
+                              System.out.printf("Enter %s:", fieldName);
+                              String field = scanner.nextLine();
+                              switch (fieldName.toLowerCase()) {
+                                  case "address" -> {
+                                      organization.setAddress(field);
+                                      organization.setLocalDateTimeEditLast(LocalDateTime.now());
+                                      System.out.println("The record updated!");
+                                  }
+                                  case "number" -> {
+                                      organization.setNumber(field);
+                                      organization.setLocalDateTimeEditLast(LocalDateTime.now());
+                                      System.out.println("The record updated!");
+                                  }
+                                  default -> System.out.println("Wrong case!");
+                              }
+                          }
+      
+                      }
+                  }
+                  case "info" -> {
+                      for(int i = 0; i < phoneBook.getPhoneBookArray().size(); i++) {
+                          if(phoneBook.getPhoneBookArray().get(i) instanceof Person person) {
+                              System.out.println((i + 1) + ". " + person.getFirstName() + person.getLastName());
+                          } else if (phoneBook.getPhoneBookArray().get(i) instanceof Organization organization) {
+                              System.out.println((i + 1) + ". " + organization.getName());
+                          }
+                      }
+                      System.out.println("Enter index to show info:");
+                      int index = -1;
+                      try {
+                          index = Integer.parseInt(scanner.nextLine());
+                      } catch (Exception ex) {
+                          System.out.println("Wrong index");
+                      }
+                      if(index <= phoneBook.getPhoneBookArray().size() && index >= 0) {
+                          System.out.println(phoneBook.getPhoneBookArray().get(index - 1));
+                      }
+                  }
+                  case "remove" -> {
+                      if(phoneBook.getPhoneBookArray().isEmpty()) {
+                          System.out.println("No records to remove!");
+                      } else {
+                          for(int i = 0; i < phoneBook.getPhoneBookArray().size(); i++) {
+                              System.out.println((i + 1) + ". " + phoneBook.getPhoneBookArray().get(i).toString());
+                          }
+                          System.out.print("Select a record: ");
+                          if(phoneBook.getPhoneBookArray().remove(scanner.nextInt() - 1).hasNumber()) {
+                              scanner.nextLine();
+                              System.out.println("The record removed!");
+                          } else System.out.println("Wrong index");
+                      }
+      
+      
+                  }
+              }
+          }
+      }
+    learner_created: true
+feedback_link: https://hyperskill.org/learn/step/5327#comment
+status: Unchecked
+record: -1

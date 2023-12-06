@@ -1,0 +1,24 @@
+type: code
+files:
+  - name: src/Main.java
+    visible: true
+    text: "import java.util.EnumSet;\nimport java.util.Scanner;\n\npublic class Main\
+    \ {\n\n    // don't change the enum\n    enum Alphabets {\n        A, B, E, I,\
+    \ L, O, T, U \n    }\n\n    EnumSet<Alphabets> enumSet;\n\n    public static void\
+    \ main(String[] args) {\n        Main object = new Main();\n\n        Scanner\
+    \ sc = new Scanner(System.in);\n        String string = sc.nextLine().trim();\n\
+    \n        // Change the code below this line\n        switch (string) {\n    \
+    \        case \"setOfVowels\":\n                break;\n            case \"setOfConsonants\"\
+    :\n                break;\n            case \"containsAOnly\":\n             \
+    \   break;\n            case \"empty\":\n                break;\n            case\
+    \ \"exceptT-A-E\":\n                break;\n            default : System.out.println(\"\
+    ERROR\");\n                break;\n       }\n        System.out.println(object.enumSet);\n\
+    \        // Change the code above this line\n    }\n}"
+    learner_created: false
+feedback_link: https://hyperskill.org/learn/step/19800#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: "Tue, 05 Dec 2023 07:17:34 UTC"
+record: -1
+submission_language: java17
