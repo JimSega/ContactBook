@@ -63,63 +63,23 @@ public class Action {
                 }
 
             }
-            case "edit" -> {
-                if(phoneBook.getCount() == 0) {
-                    System.out.println("No records to edit!");
+            case "list" -> {
+                if(phoneBook.getPhoneBookArray().isEmpty()) {
+                    System.out.println("PhoneBook isEmpty");
                 } else {
+                    ArrayList<String> arrayList = new ArrayList<>();
                     for(int i = 0; i < phoneBook.getPhoneBookArray().size(); i++) {
                         if(phoneBook.getPhoneBookArray().get(i) instanceof Person person) {
                             System.out.println((i + 1) + ". " + person.getFirstName() + " " + person.getLastName());
-                        } else if(phoneBook.getPhoneBookArray().get(i) instanceof Organization organization) {
+                            arrayList.add(person.getFirstName() + " " + person.getLastName());
+                        } else if (phoneBook.getPhoneBookArray().get(i) instanceof Organization organization) {
                             System.out.println((i + 1) + ". " + organization.getName());
+                            arrayList.add(organization.getName());
+                            System.out.println("[list] Enter action ([number], back):");
+                            secondLevel(action, scanner.nextLine(), phoneBook, scanner, arrayList);
                         }
                     }
-                    System.out.print("Select a record: ");
-                    int i = scanner.nextInt() - 1;
-                    scanner.nextLine();
-                    System.out.printf("Select a field (%s): ", phoneBook.getPhoneBookArray().get(i).getAllField());
-                    String fieldName = scanner.nextLine();
-                    System.out.printf("Enter %s:", fieldName);
-                    String field = scanner.nextLine();
-                    phoneBook.getPhoneBookArray().get(i).setField(fieldName, field);
-                    phoneBook.getPhoneBookArray().get(i).setLocalDateTimeEditLast(LocalDateTime.now());
-                    System.out.println("Saved");
                 }
-            }
-            case "list" -> {
-                for(int i = 0; i < phoneBook.getPhoneBookArray().size(); i++) {
-                    if(phoneBook.getPhoneBookArray().get(i) instanceof Person person) {
-                        System.out.println((i + 1) + ". " + person.getFirstName() + person.getLastName());
-                    } else if (phoneBook.getPhoneBookArray().get(i) instanceof Organization organization) {
-                        System.out.println((i + 1) + ". " + organization.getName());
-                    }
-                }
-                System.out.println("Enter index to show info:");
-                int index = -1;
-                try {
-                    index = Integer.parseInt(scanner.nextLine());
-                } catch (Exception ex) {
-                    System.out.println("Wrong index");
-                }
-                if(index <= phoneBook.getPhoneBookArray().size() && index >= 0) {
-                    System.out.println(phoneBook.getPhoneBookArray().get(index - 1));
-                }
-            }
-            case "remove" -> {
-                if(phoneBook.getPhoneBookArray().isEmpty()) {
-                    System.out.println("No records to remove!");
-                } else {
-                    for(int i = 0; i < phoneBook.getPhoneBookArray().size(); i++) {
-                        System.out.println((i + 1) + ". " + phoneBook.getPhoneBookArray().get(i).toString());
-                    }
-                    System.out.print("Select a record: ");
-                    if(phoneBook.getPhoneBookArray().remove(scanner.nextInt() - 1).hasNumber()) {
-                        scanner.nextLine();
-                        System.out.println("The record removed!");
-                    } else System.out.println("Wrong index");
-                }
-
-
             }
             case "search" -> {
                 System.out.println("Enter search query:");
@@ -141,19 +101,47 @@ public class Action {
                                    ArrayList<String> searchArray) {
         switch (secondAction.toLowerCase()) {
             case "again" -> Action.action(action, phoneBook,scanner);
+            case "menu" -> {
+            }
             case "back" -> {
+
             }
             default -> {
-                int i = 0;
+                int i;
                 try {
                     i = Integer.parseInt(secondAction) - 1;
                 } catch (Exception ex) {
                     System.out.println("Wrong case");
+                    break;
                 }
                 if(i >= 0 && i < searchArray.size()) {
                     System.out.println(phoneBook.getPhoneBookArray().get(i).toString());
-                }
-
+                    System.out.println("[record] Enter action (edit, delete, menu):");
+                    secondLevel(scanner.nextLine(), phoneBook, scanner, i);
+                } else System.out.println("Wrong index list!");
+            }
+        }
+    }
+    public static void secondLevel(String secondAction, PhoneBook phoneBook, Scanner scanner, int i) {
+        switch (secondAction.toLowerCase()) {
+            case "menu" -> {
+            }
+            case "edit" -> {
+                System.out.printf("Select a field (%s): ", phoneBook.getPhoneBookArray().get(i).getAllField());
+                String fieldName = scanner.nextLine();
+                System.out.printf("Enter %s:", fieldName);
+                String field = scanner.nextLine();
+                phoneBook.getPhoneBookArray().get(i).setField(fieldName, field);
+                phoneBook.getPhoneBookArray().get(i).setLocalDateTimeEditLast(LocalDateTime.now());
+                System.out.println("Saved");
+                System.out.println(phoneBook.getPhoneBookArray().get(i));
+                System.out.println("\n[record] Enter action (edit, delete, menu):");
+                secondLevel(scanner.nextLine(), phoneBook, scanner, i);
+            }
+            case "delete" -> {
+                if(phoneBook.getPhoneBookArray().remove(i).hasNumber()) {
+                    System.out.println("The record removed!");
+                } else System.out.println("Wrong index");
             }
         }
     }
