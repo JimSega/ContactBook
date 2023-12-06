@@ -83,59 +83,6 @@ public class Action {
                     phoneBook.getPhoneBookArray().get(i).setField(fieldName, field);
                     phoneBook.getPhoneBookArray().get(i).setLocalDateTimeEditLast(LocalDateTime.now());
                     System.out.println("Saved");
-                    /*if (phoneBook.getPhoneBookArray().get(i) instanceof Person person) {
-                        System.out.print("Select a field (name, surname, birth, gender, number): ");
-                        String fieldName = scanner.nextLine();
-                        System.out.printf("Enter %s:", fieldName);
-                        String field = scanner.nextLine();
-                        switch (fieldName.toLowerCase()) {
-                            case "gender" -> {
-                                person.setGender(field);
-                                person.setLocalDateTimeEditLast(LocalDateTime.now());
-                                System.out.println("The record updated!");
-                            }
-                            case "birth" -> {
-                                person.setBirthDate(field);
-                                person.setLocalDateTimeEditLast(LocalDateTime.now());
-                                System.out.println("The record updated!");
-                            }
-                            case "number" -> {
-                                person.setNumber(field);
-                                person.setLocalDateTimeEditLast(LocalDateTime.now());
-                                System.out.println("The record updated!");
-                            }
-                            case "name" -> {
-                                person.setFirstName(field);
-                                person.setLocalDateTimeEditLast(LocalDateTime.now());
-                                System.out.println("The record updated!");
-                            }
-                            case "surname" -> {
-                                person.setLastName(field);
-                                person.setLocalDateTimeEditLast(LocalDateTime.now());
-                                System.out.println("The record updated!");
-                            }
-                            default -> System.out.println("Wrong case!");
-                        }
-                    } else if (phoneBook.getPhoneBookArray().get(i) instanceof Organization organization) {
-                        System.out.print("Select a field (address, number):");
-                        String fieldName = scanner.nextLine();
-                        System.out.printf("Enter %s:", fieldName);
-                        String field = scanner.nextLine();
-                        switch (fieldName.toLowerCase()) {
-                            case "address" -> {
-                                organization.setAddress(field);
-                                organization.setLocalDateTimeEditLast(LocalDateTime.now());
-                                System.out.println("The record updated!");
-                            }
-                            case "number" -> {
-                                organization.setNumber(field);
-                                organization.setLocalDateTimeEditLast(LocalDateTime.now());
-                                System.out.println("The record updated!");
-                            }
-                            default -> System.out.println("Wrong case!");
-                        }
-                    }*/
-
                 }
             }
             case "info" -> {
