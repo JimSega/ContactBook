@@ -6,7 +6,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Action {
-    public static void action(String action, PhoneBook phoneBook, Scanner scanner) {
+    public static boolean action(String action, PhoneBook phoneBook, Scanner scanner) {
+        boolean work = true;
         switch (action.toLowerCase()) {
             case "count" -> System.out.printf("The Phone Book has %s records.\n", phoneBook.getCount());
             case "add" -> {
@@ -75,10 +76,10 @@ public class Action {
                         } else if (phoneBook.getPhoneBookArray().get(i) instanceof Organization organization) {
                             System.out.println((i + 1) + ". " + organization.getName());
                             arrayList.add(organization.getName());
-                            System.out.println("[list] Enter action ([number], back):");
-                            secondLevel(action, scanner.nextLine(), phoneBook, scanner, arrayList);
                         }
                     }
+                    System.out.println("\n[list] Enter action ([number], back):");
+                    work = secondLevel(action, scanner.nextLine(), phoneBook, scanner, arrayList);
                 }
             }
             case "search" -> {
@@ -96,13 +97,16 @@ public class Action {
                 secondLevel(action, secondLevel, phoneBook, scanner, searchArray);
             }
         }
+        return work;
     }
-    public static void secondLevel(String action, String secondAction, PhoneBook phoneBook, Scanner scanner,
+    public static boolean secondLevel(String action, String secondAction, PhoneBook phoneBook, Scanner scanner,
                                    ArrayList<String> searchArray) {
+        boolean work = true;
         switch (secondAction.toLowerCase()) {
             case "again" -> Action.action(action, phoneBook,scanner);
             case "menu" -> {
             }
+            case "exit" -> work = false;
             case "back" -> {
 
             }
@@ -117,14 +121,19 @@ public class Action {
                 if(i >= 0 && i < searchArray.size()) {
                     System.out.println(phoneBook.getPhoneBookArray().get(i).toString());
                     System.out.println("[record] Enter action (edit, delete, menu):");
-                    secondLevel(scanner.nextLine(), phoneBook, scanner, i);
+                    work = secondLevel(action, scanner.nextLine(), phoneBook, scanner, i);
                 } else System.out.println("Wrong index list!");
             }
         }
+        return work;
     }
-    public static void secondLevel(String secondAction, PhoneBook phoneBook, Scanner scanner, int i) {
+    public static boolean secondLevel(String action, String secondAction, PhoneBook phoneBook, Scanner scanner, int i) {
+        boolean work = true;
         switch (secondAction.toLowerCase()) {
             case "menu" -> {
+                if (!action.equalsIgnoreCase("search")) {
+                    work = action(action, phoneBook, scanner);
+                }
             }
             case "edit" -> {
                 System.out.printf("Select a field (%s): ", phoneBook.getPhoneBookArray().get(i).getAllField());
@@ -136,7 +145,7 @@ public class Action {
                 System.out.println("Saved");
                 System.out.println(phoneBook.getPhoneBookArray().get(i));
                 System.out.println("\n[record] Enter action (edit, delete, menu):");
-                secondLevel(scanner.nextLine(), phoneBook, scanner, i);
+                secondLevel(action, scanner.nextLine(), phoneBook, scanner, i);
             }
             case "delete" -> {
                 if(phoneBook.getPhoneBookArray().remove(i).hasNumber()) {
@@ -144,5 +153,6 @@ public class Action {
                 } else System.out.println("Wrong index");
             }
         }
+        return work;
     }
 }

@@ -1,10 +1,11 @@
 package contacts;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class PhoneBook {
+public class PhoneBook implements Serializable {
     private final ArrayList<Contact> phoneBookArray;
     public PhoneBook() {
         phoneBookArray = new ArrayList<>();
@@ -26,7 +27,9 @@ public class PhoneBook {
             for(String str:contact.getAllField().split(", ")) {
                 Matcher matcher = pattern.matcher(contact.getField(str));
                 while (matcher.find()) {
-                    resultSearch.add(contact.getField(str));
+                    if(contact instanceof Person) {
+                        resultSearch.add(((Person) contact).getFirstName() + " " + ((Person) contact).getLastName());
+                    } else resultSearch.add(contact.getField(str));
                 }
             }
         }

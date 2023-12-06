@@ -1,11 +1,12 @@
 package contacts;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class Contact {
+public abstract class Contact implements Serializable {
 
     private String number = "";
     protected final LocalDateTime localDateTime;
