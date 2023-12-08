@@ -641,10 +641,46 @@ files:
   - name: contacts.db
     visible: true
     learner_created: true
+  - name: src/command/Command.java
+    visible: true
+    learner_created: true
+  - name: src/command/AddCommand.java
+    visible: true
+    learner_created: true
+  - name: src/command/Menu.java
+    visible: true
+    learner_created: true
+  - name: src/command/RemoveCommand.java
+    visible: true
+    learner_created: true
+  - name: src/command/EditCommand.java
+    visible: true
+    learner_created: true
+  - name: src/command/CountCommand.java
+    visible: true
+    learner_created: true
+  - name: src/command/InfoCommand.java
+    visible: true
+    learner_created: true
+  - name: src/command/ListCommand.java
+    visible: true
+    learner_created: true
+  - name: src/command/SearchCommand.java
+    visible: true
+    learner_created: true
+  - name: src/command/ExitCommand.java
+    visible: true
+    learner_created: true
+  - name: src/command/Save.java
+    visible: true
+    learner_created: true
+  - name: src/contacts/UserInput.java
+    visible: true
+    learner_created: true
 feedback_link: https://hyperskill.org/learn/step/5327#comment
 status: Solved
 feedback:
   message: Well done! You've finished the project. Select a new project on <a href="https://hyperskill.org/projects">Hyperskill</a>
     to continue learning.
-  time: "Wed, 06 Dec 2023 23:13:53 UTC"
+  time: "Thu, 07 Dec 2023 00:00:45 UTC"
 record: -1
