@@ -1,10 +1,11 @@
 package command;
 
+import contacts.Main;
 import contacts.PhoneBook;
 
-class ExitCommand implements Command {
-    private PhoneBook phoneBook;
-    private String fileName;
+public class ExitCommand implements Command {
+    private final PhoneBook phoneBook;
+    private final String fileName;
     public ExitCommand(PhoneBook phoneBook, String fileName) {
         this.phoneBook = phoneBook;
         this.fileName = fileName;
@@ -12,6 +13,6 @@ class ExitCommand implements Command {
     @Override
     public void execute() {
         new Save(phoneBook, fileName).execute();
-        phoneBook.isUsed = false;
+        Main.setWork(false);
     }
 }

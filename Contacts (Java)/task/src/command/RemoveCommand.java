@@ -10,6 +10,6 @@ class RemoveCommand implements Command {
         this.index = index;
     }
     public void execute() {
-        this.phoneBook.remove(this.index);
+        phoneBook.getCount();
     }
 }

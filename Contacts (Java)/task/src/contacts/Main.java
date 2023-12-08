@@ -2,12 +2,18 @@ package contacts;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
+import command.*;
+import command.Menu;
 
 public class Main {
+    static boolean work = true;
+    public static boolean getWork() {
+        return work;
+    }
+    public static void setWork(boolean work) {
+        Main.work = work;
+    }
     public static void main(String[] args) {
-        System.out.println("[menu] Enter action (add, list, search, count, exit):");
-        Scanner scanner = new Scanner(System.in);
         File database;
         PhoneBook phoneBook;
         if(args.length == 0 || !new File(args[0]).isFile()) {
@@ -42,21 +48,17 @@ public class Main {
                 throw new RuntimeException(e);
             }
         }
-
-        String answer = scanner.nextLine();
-        boolean work = true;
-        while (!answer.equalsIgnoreCase("exit") && work) {
-            work = Action.action(answer, phoneBook, scanner);
-            if(work) {
-                System.out.println("\n[menu] Enter action (add, list, search, count, exit):");
-                answer = scanner.nextLine();
-            }
+        Menu mainMenu = new Menu("[menu] Enter action");
+        mainMenu.add("add", new AddCommand(phoneBook))
+                .add("list", new ListCommand(phoneBook))
+                .add("search", new SearchCommand(phoneBook))
+                .add("count", new CountCommand(phoneBook))
+                .add("exit", new ExitCommand(phoneBook, "contacts.db"));
+        UserInput in = new UserInput();
+        while(work) {
+            System.out.print(mainMenu);
+            mainMenu.executeCommand(in.getNextLine());
         }
-        scanner.close();
-        try {
-            SerializableFile.serialize(phoneBook, "contacts.db");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        in.closeInput();
     }
 }

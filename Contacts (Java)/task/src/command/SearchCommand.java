@@ -1,17 +1,18 @@
 package command;
 
 import contacts.PhoneBook;
+import contacts.UserInput;
 
-class SearchCommand implements Command {
-    private PhoneBook phoneBook;
+public class SearchCommand implements Command {
+    private final PhoneBook phoneBook;
     public SearchCommand(PhoneBook phoneBook) {
         this.phoneBook = phoneBook;
     }
     public void execute() {
-        this.phoneBook.search(askForQuery(phoneBook.getIn()));
+        phoneBook.search(askForQuery(new UserInput()));
     }
 
-    public String askForQuery(StandardInputHandler in) {
+    public String askForQuery(UserInput in) {
         System.out.print("Enter search query: ");
         return in.getNextLine();
     }

@@ -10,6 +10,6 @@ class InfoCommand implements Command {
         this.index = index;
     }
     public void execute() {
-        this.phoneBook.info(this.index);
+        phoneBook.getCount();
     }
 }

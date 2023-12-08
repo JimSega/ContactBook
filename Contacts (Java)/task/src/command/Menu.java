@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import contacts.UserInput;
 
-class Menu {
+public class Menu {
 
     private String menuTitle;
     private LinkedHashMap<String, Command> menuItems;

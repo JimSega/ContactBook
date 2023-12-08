@@ -8,19 +8,12 @@ public class UserInput {
 
     public String getNextLine() {
         String input = in.nextLine();
-        if (input != null) return input;
+        if (input != null) {
+            return input;
+        }
         else return "";
     }
-
-    public int getNextInt() {
-        return Integer.parseInt(in.nextLine());
-    }
-    public char getNextChar() {
-        String input = in.nextLine();
-        if (input.length() != 1) return '\u0000';
-        else return input.charAt(0);
-    }
     public void closeInput() {
-        this.in.close();
+        in.close();
     }
 }
