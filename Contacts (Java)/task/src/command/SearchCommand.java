@@ -3,6 +3,7 @@ package command;
 import contacts.Contact;
 import contacts.PhoneBook;
 import contacts.UserInput;
+import contacts.Person;
 
 import java.util.ArrayList;
 
@@ -17,7 +18,10 @@ public class SearchCommand implements Command {
         if(!searchArray.isEmpty()) {
             System.out.printf("Found %d results:\n", searchArray.size());
             for(int i = 0; i < searchArray.size(); i++) {
-                System.out.println(i + 1 + ". " + searchArray.get(i));
+                if(searchArray.get(i) instanceof Person person) {
+                    System.out.println(i + 1 + ". " + person.getFirstName() + " " + person.getLastName());
+                } else System.out.println(i + 1 + ". " + searchArray.get(i).getField("name"));
+
             }
             Menu searchMenu = Menu.constructMenu("[search] Enter action",
                     "[number]", "back", "again");

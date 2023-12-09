@@ -12,6 +12,5 @@ class InfoCommand implements Command {
     }
     public void execute() {
         System.out.println(searchArray.get(i));
-
     }
 }
