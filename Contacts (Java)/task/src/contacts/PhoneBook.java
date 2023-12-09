@@ -20,16 +20,14 @@ public class PhoneBook implements Serializable {
     public int getCount() {
         return phoneBookArray.size();
     }
-    public ArrayList<String> search(String query) {
-        ArrayList<String> resultSearch = new ArrayList<>();
+    public ArrayList<Contact> search(String query) {
+        ArrayList<Contact> resultSearch = new ArrayList<>();
         Pattern pattern = Pattern.compile(query, Pattern.CASE_INSENSITIVE);
         for(Contact contact: phoneBookArray) {
             for(String str:contact.getAllField().split(", ")) {
                 Matcher matcher = pattern.matcher(contact.getField(str));
                 while (matcher.find()) {
-                    if(contact instanceof Person) {
-                        resultSearch.add(((Person) contact).getFirstName() + " " + ((Person) contact).getLastName());
-                    } else resultSearch.add(contact.getField(str));
+                    resultSearch.add(contact);
                 }
             }
         }

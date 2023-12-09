@@ -85,7 +85,7 @@ public class Action {
             case "search" -> {
                 System.out.println("Enter search query:");
                 String search = scanner.nextLine();
-                ArrayList<String> searchArray = phoneBook.search(search);
+                ArrayList<Contact> searchArray = phoneBook.search(search);
                 if(!searchArray.isEmpty()) {
                     System.out.printf("Found %d results:\n", searchArray.size());
                     for(int i = 0; i < searchArray.size(); i++) {
@@ -94,7 +94,7 @@ public class Action {
                 } else System.out.println("Found 0 result:");
                 System.out.println("[search] Enter action ([number], back, again):");
                 String secondLevel = scanner.nextLine();
-                secondLevel(action, secondLevel, phoneBook, scanner, searchArray);
+                //secondLevel(action, secondLevel, phoneBook, scanner, searchArray);
             }
         }
         return work;

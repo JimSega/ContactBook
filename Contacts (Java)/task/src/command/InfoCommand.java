@@ -1,15 +1,17 @@
 package command;
 
-import contacts.PhoneBook;
+import contacts.Contact;
+import java.util.ArrayList;
 
 class InfoCommand implements Command {
-    private PhoneBook phoneBook;
-    private int index;
-    public InfoCommand(PhoneBook phoneBook, int index) {
-        this.phoneBook = phoneBook;
-        this.index = index;
+    private final ArrayList<Contact> searchArray;
+    private final int i;
+    public InfoCommand(ArrayList<Contact> searchArray, int i) {
+        this.searchArray = searchArray;
+        this.i = i;
     }
     public void execute() {
-        phoneBook.getCount();
+        System.out.println(searchArray.get(i));
+
     }
 }
