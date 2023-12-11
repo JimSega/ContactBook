@@ -23,16 +23,16 @@ public class SearchCommand implements Command {
                 } else System.out.println(i + 1 + ". " + searchArray.get(i).getField("name"));
 
             }
-            Menu searchMenu = Menu.constructMenu("[search] Enter action",
+            Menu searchMenu = Menu.constructMenu("\n[search] Enter action",
                     "[number]", "back", "again");
             UserInput in = new UserInput();
             System.out.println(searchMenu);
             String command = in.getNextLine();
             if (command.matches("\\d+")) {
-                int index = Integer.parseInt(command);
-                searchMenu.setCommand("[number]", new InfoCommand(searchArray, index - 1));
+                int i = Integer.parseInt(command);
+                searchMenu.setCommand("[number]", new InfoCommand(phoneBook, i - 1));
                 searchMenu.executeCommand("[number]");
-                searchMenu.setCommand("[record]", new EditCommand(searchArray, index - 1));
+                phoneBook.info(i - 1);
             }
             else {
                 switch (command) {

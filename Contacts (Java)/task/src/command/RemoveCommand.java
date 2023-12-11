@@ -2,14 +2,16 @@ package command;
 
 import contacts.PhoneBook;
 
-class RemoveCommand implements Command {
+public class RemoveCommand implements Command {
     private PhoneBook phoneBook;
-    private int index;
-    public RemoveCommand(PhoneBook phoneBook, int index) {
+    private int i;
+    public RemoveCommand(PhoneBook phoneBook, int i) {
         this.phoneBook = phoneBook;
-        this.index = index;
+        this.i = i;
     }
     public void execute() {
-        phoneBook.getCount();
+        if(phoneBook.getPhoneBookArray().remove(i).hasNumber()) {
+            System.out.println("The record removed!");
+        } else System.out.println("Wrong index");
     }
 }

@@ -6,8 +6,8 @@ import contacts.UserInput;
 
 public class Menu {
 
-    private String menuTitle;
-    private LinkedHashMap<String, Command> menuItems;
+    private final String menuTitle;
+    private final LinkedHashMap<String, Command> menuItems;
 
     public Menu(String menuTitle) {
         this.menuTitle = menuTitle;

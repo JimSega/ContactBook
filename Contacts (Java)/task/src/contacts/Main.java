@@ -48,7 +48,7 @@ public class Main {
                 throw new RuntimeException(e);
             }
         }
-        Menu mainMenu = new Menu("[menu] Enter action");
+        Menu mainMenu = new Menu("\n[menu] Enter action");
         mainMenu.add("add", new AddCommand(phoneBook))
                 .add("list", new ListCommand(phoneBook))
                 .add("search", new SearchCommand(phoneBook))

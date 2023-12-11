@@ -1,10 +1,6 @@
 package command;
 
-import contacts.Organization;
-import contacts.Person;
-import contacts.PhoneBook;
-
-import java.util.ArrayList;
+import contacts.*;
 
 public class ListCommand implements Command {
     private final PhoneBook phoneBook;
@@ -12,20 +8,26 @@ public class ListCommand implements Command {
         this.phoneBook = phoneBook;
     }
     public void execute() {
-        if(phoneBook.getPhoneBookArray().isEmpty()) {
-            System.out.println("PhoneBook isEmpty");
-        } else {
-            ArrayList<String> arrayList = new ArrayList<>();
-            for (int i = 0; i < phoneBook.getPhoneBookArray().size(); i++) {
-                if (phoneBook.getPhoneBookArray().get(i) instanceof Person person) {
-                    System.out.println((i + 1) + ". " + person.getFirstName() + " " + person.getLastName());
-                    arrayList.add(person.getFirstName() + " " + person.getLastName());
-                } else if (phoneBook.getPhoneBookArray().get(i) instanceof Organization organization) {
-                    System.out.println((i + 1) + ". " + organization.getName());
-                    arrayList.add(organization.getName());
+        phoneBook.list();
+        Menu listMenu = Menu.constructMenu("\n[list] Enter action",
+                "[number]", "back");
+        UserInput in = new UserInput();
+        System.out.println(listMenu);
+        String command = in.getNextLine();
+        if (command.matches("\\d+")) {
+            int i = Integer.parseInt(command);
+            listMenu.setCommand("[list]", new InfoCommand(phoneBook, i - 1));
+            listMenu.executeCommand("[list]");
+            phoneBook.info(i - 1);
+        }
+        else {
+            switch (command.toLowerCase()) {
+                case "back" -> System.out.println();
+                case "menu" -> {
                 }
+                default -> System.out.println("Unknown command!\n");
             }
-            System.out.println("\n[list] Enter action ([number], back):");
         }
     }
+
 }
