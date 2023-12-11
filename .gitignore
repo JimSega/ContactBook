@@ -1,5 +1,7 @@
 .gradle
 build/
+course-remote-info.yaml
+course-info.yaml
 *.db
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
