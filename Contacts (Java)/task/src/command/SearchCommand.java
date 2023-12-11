@@ -13,7 +13,6 @@ public class SearchCommand implements Command {
         this.phoneBook = phoneBook;
     }
     public void execute() {
-
         ArrayList<Contact> searchArray = phoneBook.search(askForQuery(new UserInput()));
         if(!searchArray.isEmpty()) {
             System.out.printf("Found %d results:\n", searchArray.size());
@@ -30,9 +29,10 @@ public class SearchCommand implements Command {
             String command = in.getNextLine();
             if (command.matches("\\d+")) {
                 int i = Integer.parseInt(command);
-                searchMenu.setCommand("[number]", new InfoCommand(phoneBook, i - 1));
+                int indexFromBook = phoneBook.getI(searchArray.get(i - 1));
+                searchMenu.setCommand("[number]", new InfoCommand(phoneBook, indexFromBook));
                 searchMenu.executeCommand("[number]");
-                phoneBook.info(i - 1);
+                phoneBook.info(indexFromBook);
             }
             else {
                 switch (command) {

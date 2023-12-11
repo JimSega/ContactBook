@@ -15,7 +15,6 @@ public class PhoneBook implements Serializable {
     public PhoneBook() {
         phoneBookArray = new ArrayList<>();
     }
-
     public ArrayList<Contact> getPhoneBookArray() {
         return phoneBookArray;
     }
@@ -24,6 +23,9 @@ public class PhoneBook implements Serializable {
     }
     public int getCount() {
         return phoneBookArray.size();
+    }
+    public int getI(Contact contact) {
+        return phoneBookArray.indexOf(contact);
     }
 
     public ArrayList<Contact> search(String query) {
