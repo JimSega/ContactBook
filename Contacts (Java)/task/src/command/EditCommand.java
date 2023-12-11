@@ -1,11 +1,9 @@
 package command;
 
-import contacts.Contact;
 import contacts.PhoneBook;
 import contacts.UserInput;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class EditCommand implements Command {
     private final PhoneBook phoneBook;

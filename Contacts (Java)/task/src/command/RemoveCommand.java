@@ -3,8 +3,8 @@ package command;
 import contacts.PhoneBook;
 
 public class RemoveCommand implements Command {
-    private PhoneBook phoneBook;
-    private int i;
+    private final PhoneBook phoneBook;
+    private final int i;
     public RemoveCommand(PhoneBook phoneBook, int i) {
         this.phoneBook = phoneBook;
         this.i = i;

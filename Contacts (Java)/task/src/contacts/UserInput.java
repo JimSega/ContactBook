@@ -1,5 +1,6 @@
 package contacts;
 
+import java.util.Objects;
 import java.util.Scanner;
 
 public class UserInput {
@@ -8,10 +9,7 @@ public class UserInput {
 
     public String getNextLine() {
         String input = in.nextLine();
-        if (input != null) {
-            return input;
-        }
-        else return "";
+        return Objects.requireNonNullElse(input, "");
     }
     public void closeInput() {
         in.close();
