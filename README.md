@@ -1,6 +1,21 @@
 # ContactBook
 In this project, you will write a program to create contacts (like on the mobile phone) and search for people or organizations by name.
 
+Basically, you need to implement the functionality in one place inside a concrete class. All of the derived classes should implement this method, and in the base class, there should be an abstract method. In the code, you actually call this abstract method and get different code executions in the derived classes.
+
+To solve your problem, you should create several methods:
+
+A method that returns all of the possible fields this class is able to change.
+A method that takes a string that represents a field that the class is able to change and its new value.
+A method that takes a string representation of the field and returns the value of this field.
+After that, you don't need any Boolean workarounds and type casts; the code will be nice and clean.
+
+Also, in this stage, you should implement saving to a file and loading from a file. You can save the Contacts using serialization. You should specify a file you are working with by a command-line argument. This would automatically save the Contacts on the hard drive after each action that modifies data. If you don't specify an argument, then you should create a new Contacts and keep it in memory. If you specify a file that doesn't exist, you should create an empty Contacts and save all changes to the newly created file.
+
+Also, in this stage, you should implement search functionality. For this, you can append all of the values from all of the fields and check if this string contains a search request. It should support regular expressions, too! And, of course, it should be case insensitive.
+
+Use an empty line to separate different actions, like in the example.
+
 Example
 Below is an example of how your output might look. The symbol > represents the user input.
 
